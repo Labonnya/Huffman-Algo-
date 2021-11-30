@@ -14,7 +14,7 @@ struct min_heap_node {
 
 struct min_heap {
     unsigned size;
-    unsigned capacity;
+    unsigned cap;
     struct min_heap_node** array;
 };
  
@@ -32,37 +32,37 @@ struct min_heap_node* newNode(char data, unsigned freq)
 }
  
 
-struct min_heap* create_min_heap(unsigned capacity)
+struct min_heap* create_min_heap(unsigned cap)
  
 {
  
     struct min_heap* minHeap
-        = (struct MinHeap*)malloc(sizeof(struct MinHeap));
+        = (struct min_heap*)malloc(sizeof(struct min_heap));
  
   
     minHeap->size = 0;
  
-    minHeap->capacity = capacity;
+    minHeap->cap = cap;
  
     minHeap->array
         = (struct min_heap_node**)malloc(minHeap->
-capacity * sizeof(struct min_heap_node*));
+cap * sizeof(struct min_heap_node*));
     return minHeap;
 }
  
 
-void swap_min_heap_node(struct min_heap_node** a,
-                    struct min_heap_node** b)
+void swap_min_heap_node(struct min_heap_node** x,
+                    struct min_heap_node** y)
  
 {
  
-    struct min_heap_node* t = *a;
-    *a = *b;
-    *b = t;
+    struct min_heap_node* p = *x;
+    *x = *y;
+    *y= p;
 }
  
 
-void minHeapify(struct min_heap* minHeap, int idx)
+void minHeapify(struct min_heap* minHeap, int index)
  
 {
  
@@ -80,26 +80,25 @@ freq < minHeap->array[smallest]->freq)
  
     if (smallest != index) {
         swap_min_heap_node(&minHeap->array[smallest],
-                        &minHeap->array[idx]);
+                        &minHeap->array[index]);
         minHeapify(minHeap, smallest);
     }
 }
  
 
-int isSizeOne(struct MinHeap* minHeap)
+int if_Size_One(struct min_heap* minHeap)
 {
  
     return (minHeap->size == 1);
 }
  
 
-struct min_heap_node* extractMin(struct min_heap* minHeap)
+struct min_heap_node* extMin(struct min_heap* minHeap)
  
 {
  
     struct min_heap_node* temp = minHeap->array[0];
-    minHeap->array[0]
-        = minHeap->array[minHeap->size - 1];
+    minHeap->array[0] = minHeap->array[minHeap->size - 1];
  
     --minHeap->size;
     minHeapify(minHeap, 0);
@@ -107,7 +106,7 @@ struct min_heap_node* extractMin(struct min_heap* minHeap)
     return temp;
 }
  
-void insertMinHeap(struct min_heap_node* minHeap,
+void ins_min_heap(struct min_heap_node* minHeap,
                 struct min_heap_node* min_heap_node)
  
 {
@@ -125,7 +124,7 @@ void insertMinHeap(struct min_heap_node* minHeap,
 }
  
 
-void buildMinHeap(struct min_heap* minHeap)
+void create_min_heap(struct min_heap* minHeap)
  
 {
  
@@ -145,7 +144,7 @@ void printArray(int arr[], int n)
     cout<<"\n";
 }
  
-int isLeaf(struct min_heap_node* root)
+int if_leaf(struct min_heap_node* root)
  
 {
  
@@ -153,7 +152,7 @@ int isLeaf(struct min_heap_node* root)
 }
  
 
-struct min_heap* createAndBuildMinHeap(char data[], int freq[], int size)
+struct min_heap* create_BuildMinHeap(char data[], int freq[], int size)
  
 {
  
@@ -163,7 +162,7 @@ struct min_heap* createAndBuildMinHeap(char data[], int freq[], int size)
         minHeap->array[i] = newNode(data[i], freq[i]);
  
     minHeap->size = size;
-    buildMinHeap(minHeap);
+    create_min_heap(minHeap);
  
     return minHeap;
 }
@@ -177,20 +176,20 @@ struct min_heap_node* buildht(char data[], int freq[], int size)
     struct min_heap* minHeap = create_BuildMinHeap(data, freq, size);
  
 
-    while (!isSizeOne(minHeap)) {
+    while (!ifSizeOne(minHeap)) {
  
-        left = extractMin(minHeap);
-        right = extractMin(minHeap);
+        left = extMin(minHeap);
+        right = extMin(minHeap);
         
         top = newNode('$', left->freq + right->freq);
  
         top->left = left;
         top->right = right;
  
-        insertMinHeap(minHeap, top);
+        ins_min_heap(minHeap, top);
     }
 
-    return extractMin(minHeap);
+    return extMin(minHeap);
 }
  
 
@@ -210,7 +209,7 @@ void printc(struct min_heap_node* root, int arr[], int top)
         printc(root->right, arr, top + 1);
     }
  
-    if (isLeaf(root)) {
+    if (if_Leaf(root)) {
  
         cout<< root->data <<": ";
         printArray(arr, top);
